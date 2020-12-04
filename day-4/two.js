@@ -1184,28 +1184,11 @@ const isPassportValid = (passport) => {
 
   if (keys.length < fields.mandatory.length) return false;
 
-  console.log({
-    entries: Object.entries(passport).length,
-    onlyMandatory: Object.entries(passport).filter(([key]) => !fields.optional.includes(key))
-      .length,
-    isValid: Object.entries(passport)
-      .filter(([key]) => !fields.optional.includes(key))
-      .every(([key, value]) => {
-        const r = value.match(fields.mandatory.find((field) => field.name === key).rule);
-        // console.log({ key, value, r });
-
-        return r;
-      }),
-  });
-
   return Object.entries(passport)
     .filter(([key]) => !fields.optional.includes(key))
-    .every(([key, value]) => {
-      const r = value.match(fields.mandatory.find((field) => field.name === key).rule);
-      // console.log({ key, value, r });
-
-      return r;
-    });
+    .every(([key, value]) =>
+      value.match(fields.mandatory.find((field) => field.name === key).rule)
+    );
 };
 
 console.log({ total: passports.length, valid: passports.filter(isPassportValid).length });
